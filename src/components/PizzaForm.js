@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 import Checkout from './Checkout'
-import {Link} from 'react-router-dom'
+
 
 
 const FormStyle = Styled.div`
@@ -34,7 +34,7 @@ const PizzaForm = (props) =>{
     }
 
     return(
-        <form onSubmit = {onSubmit}>
+        <form id = 'pizza-form' onSubmit = {onSubmit}>
         
             <FormStyle>
             <div className='form-commit'>
@@ -47,10 +47,11 @@ const PizzaForm = (props) =>{
                 </div>
 
                 <div className="form-group inputs">
-                    <label>
+                    <label >
                         Your name
                         Required
                         <input 
+                            id='name-input'
                             name='name'
                             type='text'
                             value={values.name}
@@ -62,6 +63,7 @@ const PizzaForm = (props) =>{
                         Choice of Size
                         Required
                         <select
+                        id='size-dropdown'
                         name='size'
                         value={values.size}
                         onChange={onChange}>
@@ -73,50 +75,6 @@ const PizzaForm = (props) =>{
                         </select> 
                     </label>
         
-                    <div className='Sauce'>
-                        Choice of Sauce
-                        Required
-                        <label>
-                            Original Red
-                            <input
-                            name='sauce'
-                            type='radio'
-                            value='originalRed'
-                            checked={values.sauce === 'originalRed'}
-                            onChange={onChange}
-                            />
-                        </label>
-                        <label>
-                            Garlic Ranch
-                            <input 
-                                name='sauce'
-                                type='radio'
-                                value='garlicRanch'
-                                checked={values.sauce === 'garlicRanch'}
-                                onChange={onChange}
-                            />
-                        </label>
-                        <label>
-                            BBQ Sauce
-                            <input 
-                                name='sauce'
-                                type="radio"
-                                value='bbqSauce'
-                                checked={values.sauce === 'bbqSauce'}
-                                onChange={onChange}
-                            />
-                        </label>
-                        <label>
-                            Spinach Alfredo
-                            <input 
-                                name='sauce'
-                                type='radio'
-                                value='spinachAlfredo'
-                                checked={values.sauce === 'spinachAlfredo'}
-                                onChange={onChange}
-                            />
-                        </label>
-                    </div>
         
                     <label>
                         <h2>Add Toppings</h2>
@@ -266,6 +224,7 @@ const PizzaForm = (props) =>{
                     <label>
                         Special Instructions
                         <input 
+                            id ='special-text'
                             name='special'
                             type="text"
                             value={values.special}
@@ -276,7 +235,7 @@ const PizzaForm = (props) =>{
                 </div>
 
             <div className='addTo'>
-                    <button id="submit" disabled={disabled} >Make Pizza</button>
+                    <button id="order-button" disabled={disabled} >Make Pizza</button>
                 </div>
                 <Checkout details={pizzaDetails} />
             </FormStyle>

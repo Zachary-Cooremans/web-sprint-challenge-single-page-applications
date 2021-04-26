@@ -6,7 +6,6 @@ import * as yup from 'yup'
 import {Route, Switch} from 'react-router-dom'
 import HomePage from "./components/Home"
 import Nav from './components/Nav'
-import Checkout from './components/Checkout'
 import formSchema from './validation/FormSchema'
 
 
@@ -22,16 +21,14 @@ const initialFormValues = {
   special: ''
 }
 const initialFormErrors = {
-  name: 'name is required',
+  name: 'name must be at least 2 characters',
   size: 'size is required',
   sauce: 'must pick a sauce',
 }
 
-const empty = [];
 const App = () => {
 
-  const [pizza, setPizza] = useState(empty)
-  const [details, setDetails] = useState([])
+  const [pizza, setPizza] = useState({})
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [disabled, setDisabled] = useState(true)
@@ -39,15 +36,16 @@ const App = () => {
   const postPizza = newPizza => {
     console.log(newPizza)
     axios
-    .post('https://reqres.in/api/users', newPizza)
+    .post('https://reqres.in/api/orders', newPizza)
     .then((res) => {
-      console.log('THIS IS RES', res.data)
-      setPizza(res.data, ...pizza)
-      setFormValues(initialFormValues)
+      console.log('THIS IS POST PIZZA', newPizza)
+      console.log('RES>DATA', res.data)
+      setPizza(res.data)
     })
     .catch((err) => {
       console.log(err)
     })
+    setFormValues(initialFormValues)
   }
 
   const change = (name, value) => {
@@ -67,19 +65,22 @@ const App = () => {
   }
 
   const submit = () => {
+    const toppings = ['pepperoni', 'sausage','canadian', 'italian',
+    'chicken', 'onions','green', 'tomatoes', 'olives', 'garlic',
+   'artichoke', 'cheese', 'pineapple', 'extra']
     const newPizza = {
+
       name: formValues.name.trim(),
-      sauce: formValues.sauce.trim(),
-      size: formValues.size.trim(),
+      size: formValues.size,
       special: formValues.special.trim(),
-      gluten: ['gluten'].filter((test) => formValues[test]),
-      toppings: ['pepperoni', 'sausage','canadian', 'italian',
-       'chicken', 'onions','green', 'tomatoes', 'olives', 'garlic',
-      'artichoke', 'cheese', 'pineapple', 'extra'].filter((topping) => formValues[topping])
-         
+      gluten: formValues.gluten,  
     }
+    toppings.forEach(top => {
+      newPizza[top] = formValues[top]
+    })
+    console.log('BEFORE REQUEST', newPizza)
     postPizza(newPizza)
-    setDetails(newPizza)
+    console.log('THIS IS NEW PIZZA', newPizza)
   };
 
   useEffect(() => {
@@ -92,11 +93,7 @@ const App = () => {
     <>
     <Switch>
 
-      <Route path='/checkout'>
-        <Checkout key={pizza.id} details={details} />
-      </Route>
-
-      <Route path="/Pizza">
+      <Route path="/pizza" id ='pizza-form'>
         <Nav />
         <PizzaForm 
         values={formValues} 
@@ -104,7 +101,7 @@ const App = () => {
         submit={submit} 
         disabled={disabled} 
         errors={formErrors}
-        pizzaDetails={details}
+        pizzaDetails={pizza}
         />
         
       </Route>

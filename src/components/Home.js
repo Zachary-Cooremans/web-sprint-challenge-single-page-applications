@@ -8,7 +8,7 @@ const HomePage = () => {
         <div>
           <h1>You favorite food delivered while coding</h1>
           <Link to={`${url}pizza`}>
-              <button id = 'redirect'>Pizza?</button>
+              <button id = 'order-pizza'>order-pizza</button>
           </Link>
     
         </div>
